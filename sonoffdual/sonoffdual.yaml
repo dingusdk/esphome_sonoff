@@ -1,0 +1,80 @@
+substitutions:
+  dev_name: sonoffdual
+
+esphome:
+  name: ${dev_name}
+  platform: ESP8266
+  board: esp8285
+  includes:
+    - SonoffDualSwitch.h
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# Enable logging
+logger:
+  baud_rate: 0
+#  level: DEBUG
+
+# Enable Home Assistant API
+api:
+  password: !secret device_password
+
+ota:
+  password: !secret device_password
+
+# web_server:
+#   port: 80
+
+status_led:
+  pin: 
+    number: GPIO13
+    inverted: True
+
+uart:
+  id: uart_bus
+  tx_pin: GPIO01
+  rx_pin: GPIO03
+  baud_rate: 19200
+
+switch:
+  - platform: custom
+    lambda: |-
+      SonoffDual::relay1 = new SonoffDual( 0);
+      App.register_component( SonoffDual::relay1);
+      return { SonoffDual::relay1};
+    switches:
+      - name: "${dev_name}_switch1"
+        id: relay_1
+
+  - platform: custom
+    lambda: |-
+      SonoffDual::relay2 = new SonoffDual( 1);
+      App.register_component( SonoffDual::relay2);
+      return { SonoffDual::relay2};
+    switches:
+      - name: "${dev_name}_switch2"
+        id: relay_2
+
+  - platform: custom
+    lambda: |-
+      SonoffDual::button = new SonoffDual( 2);
+      App.register_component( SonoffDual::button);
+      return { SonoffDual::button};
+    switches:
+      - name: "${dev_name}_button"
+        id: button
+
+
+binary_sensor:
+  - platform: status
+    name: "${dev_name}_status"
+
+sensor:
+  - platform: wifi_signal
+    name: "${dev_name}_wifi_signal"
+    update_interval: 30s
+  - platform: uptime
+    name: "${dev_name}_uptime"
+    update_interval: 120s
