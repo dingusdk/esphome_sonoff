@@ -1,6 +1,5 @@
 substitutions:
-  dev_name: sonoff_basic_1
-
+  dev_name: sonoff_s20_2
 esphome:
   name: ${dev_name}
   platform: ESP8266

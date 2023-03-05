@@ -8,21 +8,22 @@ wifi:
   password: !secret wifi_password
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Sonoffth16 Fallback Hotspot"
-    password: "F2yIDSuOl7TW"
+  # ap:
+  #   ssid: "Sonoffth16 Fallback Hotspot"
+  #   password: !secret ap_password
 
-captive_portal:
+#captive_portal:
 
 # Enable logging
 logger:
 
 # Enable Home Assistant API
 api:
-  password: "FlashMe"
+  encryption:
+    key: !secret ap_key
 
 ota:
-  password: "FlashMe"
+  password: !secret device_password
 
 status_led:
   pin: 
